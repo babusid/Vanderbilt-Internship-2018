@@ -15,16 +15,16 @@ import cv2
 
 # -------------------------------------------------------------------------------------#
 #
-# An interface for reading / controlling most sensors / actuators of miro. Subscriber 
-# recieves sensor data messages from the robot at ~50hz and publishes a control command 
+# An interface for reading / controlling most sensors / actuators of miro. Subscriber
+# recieves sensor data messages from the robot at ~50hz and publishes a control command
 # whenever a sensor message is recieved. To read current value of a sensor, simply
 # read the platform_interface.[sensor of interest] to get the value. Similarly, to
 # command the robot, modify the appropriate class variable. This effectively routes all
-# publishing and subscribing to/from the primary robot interfaces through a 
+# publishing and subscribing to/from the primary robot interfaces through a
 # single publisher and subscriber so that each class need not create its own
 #
 # This class is an 'extended singleton' so there can only be one instance of the class
-# for a given robot name. This prevents useless duplication if multiple other programs 
+# for a given robot name. This prevents useless duplication if multiple other programs
 # want to access the camera stream from the same robot
 #
 # Created by Jacob Gloudemans and James Zhu
@@ -56,8 +56,8 @@ class primary_interface:
             self.eyelid_closure = None
             self.sonar_range = None
             self.light = None
-            self.touch_head = None
-            self.touch_body = None
+            self.touch_head = [0, 0, 0, 0]
+            self.touch_body = [0, 0, 0, 0]
             self.cliff = None
 
             # Actuators
@@ -173,11 +173,11 @@ class primary_interface:
 # -------------------------------------------------------------------------------------#
 #
 # An interface for reading frames from the left and right cameras of the MIRO
-# Two class instance variables are kept updated with the most recently recieved 
+# Two class instance variables are kept updated with the most recently recieved
 # frame from each of the MIRO's cameras. Images are formatted as cv2 image objects
-# 
+#
 # This class is an 'extended singleton' so there can only be one instance of the class
-# for a given robot name. This prevents useless duplication if multiple other programs 
+# for a given robot name. This prevents useless duplication if multiple other programs
 # want to access the camera stream from the same robot
 #
 # Created by Jacob Gloudemans and James Zhu
@@ -248,7 +248,7 @@ class camera_interface:
 
 # -------------------------------------------------------------------------------------#
 #
-# An interface for reading microphone data from MIRO by de-interleaving the right and 
+# An interface for reading microphone data from MIRO by de-interleaving the right and
 # left microphone data.
 #
 # Created by Jacob Gloudemans and James Zhu
