@@ -20,4 +20,6 @@ class SecondaryInterface():
 if __name__ == "__main__":
     rospy.init_node('DriveTest', anonymous=True)
     miro1 = SecondaryInterface('rob01', 1, 1)
+    while True:
+        miro1.pint.interrupt()
     rospy.spin()

@@ -15,10 +15,10 @@ class SecondaryInterface:
 
     def interrupt(self):
         if self.pint.touch_head:
-            pass
+            self.pint.stop_moving()
         if self.pint.touch_body:
-            pass
-        else
+            self.pint.stop_moving()
+        else:
             self.default()
 
 
