@@ -1,4 +1,5 @@
-from .interfaces import*
+from interfaces import*
+
 
 class SecondaryInterface:
 
@@ -10,8 +11,8 @@ class SecondaryInterface:
         self.pint.update_body_vel(linear, angular)
         # sensor interrupt loop start
 
-    def default(self) :
-        self.pint.update_body_vel(self.linear, self.angular)
+    # def default(self):
+      #  self.pint.update_body_vel(self.linear, self.angular)
 
     def interrupt(self):
         if self.pint.touch_head:
@@ -19,7 +20,5 @@ class SecondaryInterface:
         if self.pint.touch_body:
             self.pint.stop_moving()
         else:
-            self.default()
-
-
+            self.pint.update_body_vel(self.linear, self.angular)
 
