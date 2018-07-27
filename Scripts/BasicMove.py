@@ -1,4 +1,4 @@
-from interfaces import *
+from .interfaces import *
 import rospy
 import math
 
@@ -12,6 +12,7 @@ class SecondaryInterface():
         self.pint = primary_interface(robotname)
         self.pint.update_body_vel(linear, angular)
         # sensor interrupt loop code
+
     def DefaultMotion(self):
         self.pint.update_body_vel(self.linear, self.angular)
 
