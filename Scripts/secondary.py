@@ -12,5 +12,11 @@ class SecondaryInterface:
     def defaultstate(self):
         self.pint.update_body_vel(self.default_linear, self.default_angular)
 
+
+
+
     def sensorinterrupt(self):
-        pass
+        if 1 in tester.touch_body:
+            print('activate')
+        else:
+            print("deactivate")
