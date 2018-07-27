@@ -1,10 +1,11 @@
 from interfaces import*
-import rospy
 
-class secondary_interface
+
+class SecondaryInterface:
+
     def __init__(self, robotname, linear, angular):
-        self.default_linear=linear
-        self.default_angular=angular
+        self.default_linear = linear
+        self.default_angular = angular
         self.pint = primary_interface(robotname)
         self.pint.update_body_vel(linear,angular)
 
