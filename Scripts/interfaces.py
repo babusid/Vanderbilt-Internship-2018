@@ -11,7 +11,6 @@ import time
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
-from miro_constants import miro
 
 
 # -------------------------------------------------------------------------------------#
@@ -146,7 +145,7 @@ class primary_interface:
             self.update_body_vel(0, speed)
 
         # Move head joints
-        def head_move(self, lift, yaw, pitch, speed=-1):
+        def head_move(self, lift=0.296705973, yaw=0, pitch=0.295833308, speed=-1):
             self.body_config[1] = lift
             self.body_config_speed[1] = speed
             self.body_config[2] = yaw
