@@ -146,12 +146,12 @@ class primary_interface:
 
         # Move head joints
         def head_move(self, lift, yaw, pitch, speed=-1):
-            self.body_config[1] = lift
-            self.body_config_speed[1] = speed
-            self.body_config[2] = yaw
+            self.body_config[2] = lift
             self.body_config_speed[2] = speed
-            self.body_config[3] = pitch
+            self.body_config[3] = yaw
             self.body_config_speed[3] = speed
+            self.body_config[4] = pitch
+            self.body_config_speed[4] = speed
 
 
     ##########################################################################################
