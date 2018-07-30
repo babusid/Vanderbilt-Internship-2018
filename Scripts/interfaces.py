@@ -94,7 +94,6 @@ class primary_interface:
             self.touch_body = list(array("B", data.touch_body))
             self.cliff = list(array("B", data.cliff))
 
-
             # Output new control command
             cmd = platform_control()
             cmd.body_vel = self.body_vel
@@ -156,7 +155,6 @@ class primary_interface:
 
         def tail_move(self, wag=1):
             self.tail = wag
-
 
     ##########################################################################################
     # Stuff below here ensures that only one instance of this class is created for any robot #

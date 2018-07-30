@@ -5,7 +5,7 @@
 # and to have a basic sensor driven loop
 # Created by Sidharth Babu  7/12/2018
 
-from interfaces import*
+from interfaces import *
 
 
 class SecondaryInterface:
@@ -14,20 +14,17 @@ class SecondaryInterface:
         self.default_linear = linear
         self.default_angular = angular
         self.pint = primary_interface(robotname)
-        self.pint.update_body_vel(linear,angular)
+        self.pint.update_body_vel(linear, angular)
 
     def defaultstate(self):
         self.pint.update_body_vel(self.default_linear, self.default_angular)
 
-
-
-
     def sensorinterrupt(self):
         if 1 in self.pint.touch_body:
-            # What to do if someone touches the body
-            pass
+            self.pint.stop_moving()
+            self.pint.tail_move()
         elif 1 in self.pint.touch_head:
-            # What to do if someone touches the head
-            pass
+            self.pint.stop_moving()
+            self.pint.tail_move()
         else:
             self.defaultstate()
