@@ -77,7 +77,7 @@ class SecondaryInterface:
 
                         # if next event occurs within 1 sec, initiates response
                         if self.value != 0 and (rospy.get_rostime() - start_time).to_sec() < 1.0:
-                            behavior.pet_detect()
+                            self.pet_detect()
                             flag_pet = False
                             time.sleep(.5)
                         else:
@@ -85,7 +85,7 @@ class SecondaryInterface:
                     elif flag_pat == True:
 
                         if (rospy.get_rostime() - start_time).to_sec() < 1.0:
-                            behavior.pat_detect()
+                            self.pat_detect()
                             flag_pat = False
                             time.sleep(.5)
                         else:
