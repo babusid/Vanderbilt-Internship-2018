@@ -93,6 +93,7 @@ class primary_interface:
             self.touch_body = list(array("B", data.touch_body))
             self.cliff = list(array("B", data.cliff))
 
+
             # Output new control command
             cmd = platform_control()
             cmd.body_vel = self.body_vel
@@ -142,6 +143,16 @@ class primary_interface:
         # Turn at the given velocity in rad/sec
         def turn(self, speed):
             self.update_body_vel(0, speed)
+
+        # Move head joints
+        def head_move(self, lift, yaw, pitch, speed=-1):
+            self.body_config[1] = lift
+            self.body_config_speed[1] = speed
+            self.body_config[2] = yaw
+            self.body_config_speed[2] = speed
+            self.body_config[3] = pitch
+            self.body_config_speed[3] = speed
+
 
     ##########################################################################################
     # Stuff below here ensures that only one instance of this class is created for any robot #
