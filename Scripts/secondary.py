@@ -1,3 +1,10 @@
+#############
+# A secondary interface built on top of the primary interface
+# written by James Zhu and Jacob Gloudemans
+# to allow the default state to be one other than the robot standing still
+# and to have a basic sensor driven loop
+# Created by Sidharth Babu  7/12/2018
+
 from interfaces import*
 
 
@@ -16,7 +23,11 @@ class SecondaryInterface:
 
 
     def sensorinterrupt(self):
-        if 1 in tester.touch_body:
-            print('activate')
+        if 1 in self.pint.touch_body:
+            # What to do if someone touches the body
+            pass
+        elif 1 in self.pint.touch_head:
+            # What to do if someone touches the head
+            pass
         else:
-            print("deactivate")
+            self.defaultstate()

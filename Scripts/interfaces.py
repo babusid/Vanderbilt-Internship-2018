@@ -29,7 +29,8 @@ import cv2
 #
 # Created by Jacob Gloudemans and James Zhu
 # 2/15/2018
-#
+# Edited by Sidharth Babu
+# 6/12/2018
 # -------------------------------------------------------------------------------------#
 # -------------------------------------------------------------------------------------#
 
@@ -152,6 +153,9 @@ class primary_interface:
             self.body_config_speed[2] = speed
             self.body_config[3] = pitch
             self.body_config_speed[3] = speed
+
+        def tail_move(self, wag=1):
+            self.tail = wag
 
 
     ##########################################################################################
