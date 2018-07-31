@@ -21,29 +21,30 @@ class SecondaryInterface:
     def __init__(self, robotname, linear, angular):
         self.default_linear = linear
         self.default_angular = angular
-        self.pint =primary_interface(robotname)
-        self.pint.update_body_vel(linear, angular)
+        self.pint = primary_interface(robotname)
 
     def defaultmovestate(self):
+        self.pint.tail_move(0)
+        self.pint.head_move()
         self.pint.update_body_vel(self.default_linear, self.default_angular)
 
     def sensorinterrupt(self):
-        while not rospy.is_shutdown():
+        while True:
 
             if 1 in self.pint.touch_body:
                 self.pint.stop_moving()
                 self.pint.tail_move()
-                self.pint.body_config = [0, 0, 0, 1]
+                self.pint.head_move(1)
                 time.sleep(.5)
-                self.pint.body_config = [0, 0, 0, 0]
+                self.pint.head_move()
 
             elif 1 in self.pint.touch_head:
                 self.pint.stop_moving()
                 self.pint.tail_move()
-                # nod head in approval
-                self.pint.body_config = [0, 0, 0, 1]
+                self.pint.head_move(1)
                 time.sleep(.5)
-                self.pint.body_config = [0, 0, 0, 0]
+                self.pint.head_move()
+
             else:
 
                 self.defaultmovestate()

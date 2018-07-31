@@ -146,12 +146,8 @@ class primary_interface:
 
         # Move head joints
         def head_move(self, lift=0.296705973, yaw=0, pitch=0.295833308, speed=-1):
-            self.body_config[1] = lift
-            self.body_config_speed[1] = speed
-            self.body_config[2] = yaw
-            self.body_config_speed[2] = speed
-            self.body_config[3] = pitch
-            self.body_config_speed[3] = speed
+            self.body_config = [0, lift, yaw, pitch]
+            self.body_config_speed = [speed, speed, speed, speed]
 
         def tail_move(self, wag=1):
             self.tail = wag
