@@ -29,8 +29,8 @@ class SecondaryInterface:
         self.pint.update_body_vel(self.default_linear, self.default_angular)
 
     def sensorinterrupt(self):
-        while True:
-
+        while not rospy.is_shutdown():
+            # create your if statement based sensor routine here
             if 1 in self.pint.touch_body:
                 self.pint.stop_moving()
                 self.pint.tail_move()
@@ -44,8 +44,6 @@ class SecondaryInterface:
                 self.pint.head_move(1)
                 time.sleep(.5)
                 self.pint.head_move()
-
+            # below returns robot to default state
             else:
-
                 self.defaultmovestate()
-

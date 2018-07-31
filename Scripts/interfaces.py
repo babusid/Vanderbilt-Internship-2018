@@ -118,7 +118,7 @@ class primary_interface:
             for flag in self.relevant_flags:
                 flag.update()
 
-        ### Methods to simplify locomotion ###
+        ### Methods to simplify usage of robot ###
         # Updates the body_vel to the specified values (in m/s and rad/sec)
         def update_body_vel(self, linear, angular):
             twist = Twist()
