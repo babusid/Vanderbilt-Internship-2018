@@ -79,6 +79,8 @@ class primary_interface:
             self.sound_index_P1 = 0
             self.sound_index_P2 = 0
 
+            # return variable for pet/pat method
+            self.returner = bool
         def data_in(self, data):
             # Update sensor variables
             self.battery_voltage = data.battery_voltage
@@ -151,6 +153,69 @@ class primary_interface:
 
         def tail_move(self, wag=1):
             self.tail = wag
+
+        def pet_pat(self):
+            # this method when called, will continuously update
+            # self.returner for the duration of ROS being active
+            # to use this method, use the if-else in PrimaryHandler
+            # and make it based off of the boolean value
+            # it is True when it is being patted
+            # it is False when it is being petted
+
+            while not rospy.is_shutdown():
+
+                start_time = rospy.get_rostime()
+                self.old_value = 0.0
+                flag_pet = False
+                flag_pat = False
+                self.body_config_speed = [5, 5, 5, 5]
+
+                while not rospy.is_shutdown():
+
+                    if self.touch_body:
+
+                        # find average value of body touch
+                        try:
+                            self.value = (self.touch_body[0] + 2.0 * self.touch_body[1] + 3.0 *
+                                          self.touch_body[2] + 4.0 * self.touch_body[3]) / (
+                                             numpy.sum(self.touch_body))
+                        except ZeroDivisionError:
+                            self.value = 0
+
+                        # test for 2 different types of touching (petting and patting)
+                        if abs(self.value - self.old_value) > .5:
+
+                            # No flags activated
+                            if flag_pet == False and flag_pat == False:
+
+                                if self.value != 0:
+                                    flag_pet = True
+                                    flag_pat = False
+                                else:
+                                    flag_pet = False
+                                    flag_pat = True
+                                print
+                                flag_pet, flag_pat
+                                start_time = rospy.get_rostime()
+                            # one flag activated
+                            elif flag_pet == True:
+
+                                # if next event occurs within 1 sec, initiates response
+                                if self.value != 0 and (rospy.get_rostime() - start_time).to_sec() < 1.0:
+                                    self.returner = False
+                                    flag_pet = False
+                                    time.sleep(.5)
+                                else:
+                                    flag_pet = False
+                            elif flag_pat == True:
+
+                                if (rospy.get_rostime() - start_time).to_sec() < 1.0:
+                                    self.returner = True
+                                    flag_pat = False
+                                    time.sleep(.5)
+                                else:
+                                    flag_pat = False
+                        self.old_value = self.value
 
     ##########################################################################################
     # Stuff below here ensures that only one instance of this class is created for any robot #

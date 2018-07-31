@@ -9,4 +9,6 @@ tester = primary_interface('rob01')
 # tester.head_move(1)
 # time.sleep(2)
 # tester.head_move(1)
-tester.tail_move()
+tester.pet_pat()
+while True:
+    print(tester.returner)
