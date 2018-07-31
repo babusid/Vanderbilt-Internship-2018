@@ -1,3 +1,4 @@
+#########################################################################################
 import rospy
 from std_msgs.msg import String
 from miro_msgs.msg import platform_mics, platform_sensors
@@ -17,66 +18,75 @@ class pet_test:
 
     def data_in(self):
 
+        start_time = rospy.get_rostime()
+        self.old_value = 0.0
+        flag_pet = False
+        flag_pat = False
+        self.primary_int.body_config_speed = [5, 5, 5, 5]
+
         while not rospy.is_shutdown():
 
-            start_time = rospy.get_rostime()
-            self.old_value = 0.0
-            flag_pet = False
-            flag_pat = False
-            self.primary_int.body_config_speed = [5, 5, 5, 5]
+            if self.primary_int.touch_body:
 
-            while not rospy.is_shutdown():
+                # find average value of body touch
+                try:
+                    self.value = (self.primary_int.touch_body[0] + 2.0 * self.primary_int.touch_body[1] + 3.0 *
+                                  self.primary_int.touch_body[2] + 4.0 * self.primary_int.touch_body[3]) / (
+                                     numpy.sum(self.primary_int.touch_body))
+                except ZeroDivisionError:
+                    self.value = 0
 
-                if self.primary_int.touch_body:
+                # test for 2 different types of touching (petting and patting)
+                if abs(self.value - self.old_value) > .5:
 
-                    # find average value of body touch
-                    try:
-                        self.value = (self.primary_int.touch_body[0] + 2.0 * self.primary_int.touch_body[1] + 3.0 *
-                                      self.primary_int.touch_body[2] + 4.0 * self.primary_int.touch_body[3]) / (
-                                         numpy.sum(self.primary_int.touch_body))
-                    except ZeroDivisionError:
-                        self.value = 0
+                    # No flags activated
+                    if flag_pet == False and flag_pat == False:
 
-                    # test for 2 different types of touching (petting and patting)
-                    if abs(self.value - self.old_value) > .5:
+                        if self.value != 0:
+                            flag_pet = True
+                            flag_pat = False
+                        else:
+                            flag_pet = False
+                            flag_pat = True
+                        print
+                        flag_pet, flag_pat
+                        start_time = rospy.get_rostime()
+                    # one flag activated
+                    elif flag_pet == True:
 
-                        # No flags activated
-                        if flag_pet == False and flag_pat == False:
+                        # if next event occurs within 1 sec, initiates response
+                        if self.value != 0 and (rospy.get_rostime() - start_time).to_sec() < 1.0:
+                            behavior.pet_detect()
+                            flag_pet = False
+                            time.sleep(.5)
+                        else:
+                            flag_pet = False
+                    elif flag_pat == True:
 
-                            if self.value != 0:
-                                flag_pet = True
-                                flag_pat = False
-                            else:
-                                flag_pet = False
-                                flag_pat = True
-                            print
-                            flag_pet, flag_pat
-                            start_time = rospy.get_rostime()
-                        # one flag activated
-                        elif flag_pet == True:
-
-                            # if next event occurs within 1 sec, initiates response
-                            if self.value != 0 and (rospy.get_rostime() - start_time).to_sec() < 1.0:
-                                self.pet_detect()
-                                flag_pet = False
-                                time.sleep(.5)
-                            else:
-                                flag_pet = False
-                        elif flag_pat == True:
-
-                            if (rospy.get_rostime() - start_time).to_sec() < 1.0:
-                                self.pat_detect()
-                                flag_pat = False
-                                time.sleep(.5)
-                            else:
-                                flag_pat = False
-                    self.old_value = self.value
+                        if (rospy.get_rostime() - start_time).to_sec() < 1.0:
+                            behavior.pat_detect()
+                            flag_pat = False
+                            time.sleep(.5)
+                        else:
+                            flag_pat = False
+                self.old_value = self.value
 
     def pet_detect(self):
-        print('pet')
+
+        # nod head in approval
+        self.primary_int.body_config = [0, 0, 0, 1]
+        time.sleep(.5)
+        self.primary_int.body_config = [0, 0, 0, 0]
 
     def pat_detect(self):
-        print("pat")
+
+        # shake head in disproval
+        self.primary_int.body_config = [0, 0, .2, 0]
+        time.sleep(.25)
+        self.primary_int.body_config = [0, 0, -2, 0]
+        time.sleep(.25)
+        self.primary_int.body_config = [0, 0, 0, 0]
+
 
 if __name__ == "__main__":
     rospy.init_node("mic_test", anonymous=True)
