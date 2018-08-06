@@ -40,14 +40,16 @@ class SecondaryInterface:
             elif 1 in self.pint.touch_head:
                 self.pint.stop_moving()
                 self.pint.tail_move()
-                self.pint.head_move(1)
-                time.sleep(.5)
+                self.pint.head_move(.25)
+                time.sleep(.25)
+                self.pint.head_move(-.25)
+                time.sleep(.25)
                 self.pint.head_move()
             # below returns robot to default state
 
             elif self.pint.sonar_range <= 0.25 and self.pint.sonar_range != 0:
-                print(self.pint.sonar_range)
-                self.pint.stop_moving()
+                self.pint.rand_head_turn()
+                print(self.pint.randhead)
             else:
                 self.defaultmovestate()
 

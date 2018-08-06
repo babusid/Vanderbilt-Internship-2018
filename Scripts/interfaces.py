@@ -1,6 +1,6 @@
 # Necessary imports
 import rospy
-
+import random
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist, Pose2D
 from sensor_msgs.msg import Temperature, Imu, JointState, Range
@@ -57,8 +57,8 @@ class primary_interface:
             self.eyelid_closure = None
             self.sonar_range = None
             self.light = None
-            self.touch_head = [0,0,0,0]
-            self.touch_body = [0,0,0,0]
+            self.touch_head = [0, 0, 0, 0]
+            self.touch_body = [0, 0, 0, 0]
             self.cliff = None
 
             # Actuators
@@ -78,6 +78,9 @@ class primary_interface:
             self.lights_rgb = [0, 0, 0]
             self.sound_index_P1 = 0
             self.sound_index_P2 = 0
+
+            # needed variables
+            self.randhead = None
 
         def data_in(self, data):
             # Update sensor variables
@@ -146,12 +149,31 @@ class primary_interface:
             self.update_body_vel(0, speed)
 
         # Move head joints
-        def head_move(self, lift=0.296705973, yaw=0, pitch=0.295833308, speed=-1):
+        def head_move(self, lift=0.296705973, yaw=0.0, pitch=0.295833308, speed=-1.0):
             self.body_config = [0, lift, yaw, pitch]
             self.body_config_speed = [speed, speed, speed, speed]
 
+        # shake head side to side
+        def head_shake(self, radius=0.2):
+            self.head_move(0, radius)
+            time.sleep(.25)
+            self.head_move(0, -radius)
+            time.sleep(.25)
+            self.head_move()
+
+        # wags tail
         def tail_move(self, wag=1):
             self.tail = wag
+
+        # turns head randomly to the left or right
+        def rand_head_turn(self, radius):
+            x = random.randint(0, 1)
+            if x == 1:
+                self.head_move(0, radius, 0, -.5)
+                self.randhead = x
+            else:
+                self.head_move(0, radius, 0, -.5)
+                self.randhead = x
 
         def pet_pat(self):
             self.body_config_speed = [5, 5, 5, 5]
@@ -162,18 +184,18 @@ class primary_interface:
                     # avg body touch algorithm
                     self.value = 0.0
                     self.value = numpy.average(self.touch_body)
-                    print (self.touch_body)
+                    print(self.touch_body)
                     print(self.value)
                 except ZeroDivisionError:
                     self.value = 0
 
-                    if 0.5 >= self.value > 0: # governs behavior when PETTED
+                    if 0.5 >= self.value > 0:  # governs behavior when PETTED
                         self.stop_moving()
                         self.tail_move()
                         self.body_config = [0, 0, 0, 1]
                         time.sleep(.5)
                         self.body_config = [0, 0, 0, 0]
-                    elif self.value > 0.5: # governs behavior when PATTED
+                    elif self.value > 0.5:  # governs behavior when PATTED
                         self.stop_moving()
                         self.tail_move(1)
                         self.body_config = [0, 0, .2, 0]

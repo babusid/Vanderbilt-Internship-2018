@@ -92,3 +92,4 @@ if __name__ == "__main__":
     rospy.init_node("mic_test", anonymous=True)
     behavior = pet_test()
     behavior.data_in()
+
