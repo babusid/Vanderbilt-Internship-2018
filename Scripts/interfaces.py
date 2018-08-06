@@ -165,15 +165,6 @@ class primary_interface:
         def tail_move(self, wag=1):
             self.tail = wag
 
-        # turns head randomly to the left or right
-        def rand_head_turn(self, radius):
-            x = random.randint(0, 1)
-            if x == 1:
-                self.head_move(0, radius, 0, -.5)
-                self.randhead = x
-            else:
-                self.head_move(0, radius, 0, -.5)
-                self.randhead = x
 
         def pet_pat(self):
             self.body_config_speed = [5, 5, 5, 5]

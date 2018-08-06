@@ -6,7 +6,7 @@
 # Created by Sidharth Babu  7/12/2018
 
 from interfaces import *
-
+import math
 import rospy
 from std_msgs.msg import String
 from miro_msgs.msg import platform_mics, platform_sensors
@@ -22,6 +22,7 @@ class SecondaryInterface:
         self.default_linear = linear
         self.default_angular = angular
         self.pint = primary_interface(robotname)
+
     def defaultmovestate(self):
         self.pint.tail_move(0)
         self.pint.head_move()
@@ -40,16 +41,18 @@ class SecondaryInterface:
             elif 1 in self.pint.touch_head:
                 self.pint.stop_moving()
                 self.pint.tail_move()
-                self.pint.head_move(.25)
+                self.pint.head_move(0, .25)
                 time.sleep(.25)
-                self.pint.head_move(-.25)
+                self.pint.head_move(0, -.25)
                 time.sleep(.25)
                 self.pint.head_move()
             # below returns robot to default state
 
-            elif self.pint.sonar_range <= 0.25 and self.pint.sonar_range != 0:
-                self.pint.rand_head_turn()
-                print(self.pint.randhead)
+            elif self.pint.sonar_range <= 0.5 and self.pint.sonar_range != 0:
+                x = random.randint(0, 1)
+                if x == 1:
+                    self.pint.turn(math.pi)
+                elif x == 0:
+                    self.pint.turn(-math.pi)
             else:
                 self.defaultmovestate()
-
