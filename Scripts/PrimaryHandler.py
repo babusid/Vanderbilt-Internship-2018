@@ -49,6 +49,7 @@ class SecondaryInterface:
             # below returns robot to default state
 
             elif self.pint.sonar_range <= 0.5 and self.pint.sonar_range != 0:
+                self.pint.stop_moving()
                 self.pint.head_move(0, .2)
                 x = self.pint.sonar_range
                 time.sleep(.5)
