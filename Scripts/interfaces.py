@@ -5,12 +5,13 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist, Pose2D
 from sensor_msgs.msg import Temperature, Imu, JointState, Range
 from nav_msgs.msg import Odometry
-from miro_msgs.msg import platform_control, platform_sensors
 from array import array
-
+from miro_msgs.msg import platform_control, platform_sensors
+import numpy
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
+import time
 
 
 # -------------------------------------------------------------------------------------#
@@ -56,8 +57,8 @@ class primary_interface:
             self.eyelid_closure = None
             self.sonar_range = None
             self.light = None
-            self.touch_head = None
-            self.touch_body = None
+            self.touch_head = [0,0,0,0]
+            self.touch_body = [0,0,0,0]
             self.cliff = None
 
             # Actuators
@@ -151,6 +152,35 @@ class primary_interface:
 
         def tail_move(self, wag=1):
             self.tail = wag
+
+        def pet_pat(self):
+            self.body_config_speed = [5, 5, 5, 5]
+            if self.touch_body:
+
+                # find average value of body touch
+                try:
+                    # avg body touch algorithm
+                    self.value = 0.0
+                    self.value = numpy.average(self.touch_body)
+                    print (self.touch_body)
+                    print(self.value)
+                except ZeroDivisionError:
+                    self.value = 0
+
+                    if 0.5 >= self.value > 0: # governs behavior when PETTED
+                        self.stop_moving()
+                        self.tail_move()
+                        self.body_config = [0, 0, 0, 1]
+                        time.sleep(.5)
+                        self.body_config = [0, 0, 0, 0]
+                    elif self.value > 0.5: # governs behavior when PATTED
+                        self.stop_moving()
+                        self.tail_move(1)
+                        self.body_config = [0, 0, .2, 0]
+                        time.sleep(.25)
+                        self.body_config = [0, 0, -2, 0]
+                        time.sleep(.25)
+                        self.body_config = [0, 0, 0, 0]
 
     ##########################################################################################
     # Stuff below here ensures that only one instance of this class is created for any robot #

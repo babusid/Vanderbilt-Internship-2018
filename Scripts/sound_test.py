@@ -1,7 +1,7 @@
 import rospy
 
 from miro_msgs.msg import bridge_stream , bridge_config
-from interfaces import primary_interface, sound_interface
+from interfaces import primary_interface #  sound_interface
 
 class sound_test:
 

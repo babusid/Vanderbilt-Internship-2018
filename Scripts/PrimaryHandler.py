@@ -1,7 +1,7 @@
 #############
 # A secondary interface built on top of the primary interface and other codes
 # written by James Zhu and Jacob Gloudemans
-# to allow the default state to be one other than the robot 
+# to allow the default state to be one other than the robot
 # standing still and to conglomerate as many actions as programmed by James and Jacob
 # Created by Sidharth Babu  7/12/2018
 
@@ -22,7 +22,6 @@ class SecondaryInterface:
         self.default_linear = linear
         self.default_angular = angular
         self.pint = primary_interface(robotname)
-
     def defaultmovestate(self):
         self.pint.tail_move(0)
         self.pint.head_move()
@@ -45,5 +44,10 @@ class SecondaryInterface:
                 time.sleep(.5)
                 self.pint.head_move()
             # below returns robot to default state
+
+            elif self.pint.sonar_range <= 0.25 and self.pint.sonar_range != 0:
+                print(self.pint.sonar_range)
+                self.pint.stop_moving()
             else:
                 self.defaultmovestate()
+
