@@ -49,10 +49,18 @@ class SecondaryInterface:
             # below returns robot to default state
 
             elif self.pint.sonar_range <= 0.5 and self.pint.sonar_range != 0:
-                x = random.randint(0, 1)
-                if x == 1:
+                self.pint.head_move(0, .2)
+                x = self.pint.sonar_range
+                time.sleep(.5)
+                self.pint.head_move(0, -.2)
+                y = self.pint.sonar_range
+                time.sleep(.5)
+                if x > y:
                     self.pint.turn(math.pi)
-                elif x == 0:
+                elif y > x:
                     self.pint.turn(-math.pi)
+                else:
+                    self.pint.drive_straight(-.2)
+
             else:
                 self.defaultmovestate()
