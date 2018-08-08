@@ -21,12 +21,13 @@ while True:
     time.sleep(.2)
     y = tester.sonar_range  # right side turn range value
     time.sleep(.2)
+    z = (x + y)/2 # average distance from both sides
     tester.head_move()  # set back to middle
     print(str(x) + '| leftval')
     print(str(y) + '| rightval')
     if x > 0 and y > 0:  # make sure its registering some value
 
-        if x < .1 or y < .1:  # its too close; get away
+        if z < .3:  # its too close; get away
             print('straight back')
             tester.drive_straight(-.2)
             time.sleep(2)
@@ -37,7 +38,7 @@ while True:
             if x > y:  # right side is closer than left; move left
                 print('left')
                 tester.turn(math.pi)
-                time.sleep(.5)
+                time.sleep(.25)
                 tester.drive_straight()
                 time.sleep(1)
                 tester.stop_moving()
@@ -45,7 +46,7 @@ while True:
             elif y > x:  # left side is closer than right; move right
                 print('right')
                 tester.turn(-math.pi)
-                time.sleep(.5)
+                time.sleep(.25)
                 tester.drive_straight()
                 time.sleep(1)
                 tester.stop_moving()
