@@ -4,7 +4,7 @@
 # default behavior is to move around whilst avoiding any obstacles and reacting to touch
 
 import math
-
+import time
 import rospy
 
 from interfaces import *
@@ -20,14 +20,16 @@ class SecondaryInterface:
     def defaultmovestate(self):
         # utilizes the sonar sensors so that
         # the robot can move around without hitting things
-
+        self.pint.ear_rotate = [1, 0]  # move one ear
         self.pint.head_move(0, .2)  # turn to left side
         time.sleep(.2)
         x = self.pint.sonar_range  # left side turn range value
         time.sleep(.2)
         self.pint.head_move()  # set to middle
+        self.pint.ear_rotate = [0, 0]  # set ears to normal
         time.sleep(.2)
-        self.pint.head_move(0, -.2)  # turn to right side4
+        self.pint.head_move(0, -.2)  # turn to right side
+        self.pint.ear_rotate = [0, 1] # move other ear
         time.sleep(.2)
         y = self.pint.sonar_range  # right side turn range value
         time.sleep(.2)
