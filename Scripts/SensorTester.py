@@ -12,15 +12,15 @@ tester = primary_interface('rob01')
 # tester.head_move(1)
 while True:
     tester.head_move(0, .2)  # turn to left side
-    time.sleep(1)
+    time.sleep(.2)
     x = tester.sonar_range  # left side turn range value
-    time.sleep(1)
+    time.sleep(.2)
     tester.head_move()  # set to middle
-    time.sleep(1)
+    time.sleep(.2)
     tester.head_move(0, -.2)  # turn to right side4
-    time.sleep(1)
+    time.sleep(.2)
     y = tester.sonar_range  # right side turn range value
-    time.sleep(1)
+    time.sleep(.2)
     tester.head_move()  # set back to middle
     print(str(x) + '| leftval')
     print(str(y) + '| rightval')
@@ -37,7 +37,7 @@ while True:
             if x > y:  # right side is closer than left; move left
                 print('left')
                 tester.turn(math.pi)
-                time.sleep(.5)
+                time.sleep(1)
                 tester.drive_straight()
                 time.sleep(1)
                 tester.stop_moving()
@@ -45,7 +45,7 @@ while True:
             elif y > x:  # left side is closer than right; move right
                 print('right')
                 tester.turn(-math.pi)
-                time.sleep(.5)
+                time.sleep(1)
                 tester.drive_straight()
                 time.sleep(1)
                 tester.stop_moving()
