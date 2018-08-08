@@ -37,7 +37,7 @@ while True:
             if x > y:  # right side is closer than left; move left
                 print('left')
                 tester.turn(math.pi)
-                time.sleep(1)
+                time.sleep(.5)
                 tester.drive_straight()
                 time.sleep(1)
                 tester.stop_moving()
@@ -45,7 +45,7 @@ while True:
             elif y > x:  # left side is closer than right; move right
                 print('right')
                 tester.turn(-math.pi)
-                time.sleep(1)
+                time.sleep(.5)
                 tester.drive_straight()
                 time.sleep(1)
                 tester.stop_moving()
