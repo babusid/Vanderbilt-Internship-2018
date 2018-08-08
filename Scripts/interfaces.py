@@ -55,7 +55,7 @@ class primary_interface:
             self.odometry = None
             self.joint_state = None
             self.eyelid_closure = None
-            self.sonar_range = None
+            self.sonar_range = 1.0
             self.light = None
             self.touch_head = [0, 0, 0, 0]
             self.touch_body = [0, 0, 0, 0]
@@ -149,7 +149,7 @@ class primary_interface:
             self.update_body_vel(0, speed)
 
         # Move head joints
-        def head_move(self, lift=0.296705973, yaw=0.0, pitch=0.295833308, speed=-1.0):
+        def head_move(self, lift=0.0, yaw=0.0, pitch=0.0, speed=-1.0):
             self.body_config = [0, lift, yaw, pitch]
             self.body_config_speed = [speed, speed, speed, speed]
 

@@ -50,18 +50,21 @@ class SecondaryInterface:
 
             elif self.pint.sonar_range <= 0.5 and self.pint.sonar_range != 0:
                 print(self.pint.sonar_range)
-                self.pint.update_body_vel(.5*self.default_linear, self.default_angular)
                 self.pint.head_move(0, .2)
-                x = self.pint.sonar_range
-                time.sleep(.25)
-                self.pint.head_move(0, -.2)
-                y = self.pint.sonar_range
-                if x > y:
-                    self.pint.turn(math.pi)
-                elif y > x:
-                    self.pint.turn(-math.pi)
-                else:
-                    self.pint.drive_straight(-.2)
+
+                self.pint.turn(math.pi)
+                # self.pint.update_body_vel(.5*self.default_linear, self.default_angular)
+                # self.pint.head_move(0, .2)
+                # x = self.pint.sonar_range
+                # time.sleep(.25)
+                # self.pint.head_move(0, -.2)
+                # y = self.pint.sonar_range
+                # if x > y:
+                #     self.pint.turn(math.pi)
+                # elif y > x:
+                #     self.pint.turn(-math.pi)
+                # else:
+                #     self.pint.drive_straight(-.2)
 
             else:
                 self.defaultmovestate()
