@@ -29,9 +29,11 @@ while True:
 
         if z < .3:  # its too close; get away
             print('straight back')
+            tester.tail_move(-1)
             tester.drive_straight(-.2)
             time.sleep(2)
             tester.stop_moving()
+            tester.tail_move(0)
 
         else:  # nothing too close
 
